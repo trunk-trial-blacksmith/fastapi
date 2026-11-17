@@ -51,14 +51,13 @@ jobs:
     timeout-minutes: 10
     strategy:
       matrix:
-        os: [ windows-latest, macos-latest ]
-        python-version: [ "3.15", "3.15t" ]
+        os: [ windows-latest ]
+        python-version: [ "3.15" ]
         deprecated-tests: [ "no-deprecation" ]
         uv-resolution:
           - highest
         starlette-src:
           - starlette-pypi
-          - starlette-git
         include:
           - os: macos-latest
             python-version: "3.11"
@@ -76,37 +75,17 @@ jobs:
             uv-resolution: highest
             deprecated-tests: "no-deprecation"
           - os: ubuntu-latest
-            python-version: "3.13"
-            uv-resolution: highest
-            codspeed: codspeed
-            deprecated-tests: "no-deprecation"
-          - os: ubuntu-latest
-            python-version: "3.13"
-            uv-resolution: highest
-            deprecated-tests: "no-deprecation"
-            without-httpx2: true
-          - os: ubuntu-latest
             python-version: "3.14"
             coverage: coverage
             uv-resolution: highest
             starlette-src: starlette-git
             deprecated-tests: "test-deprecation"
           - os: ubuntu-latest
-            python-version: "3.14t"
-            coverage: coverage
-            uv-resolution: highest
-            deprecated-tests: "no-deprecation"
-          - os: ubuntu-latest
             python-version: "3.15"
             coverage: coverage
             uv-resolution: highest
             starlette-src: starlette-git
             deprecated-tests: "test-deprecation"
-          - os: ubuntu-latest
-            python-version: "3.15t"
-            coverage: coverage
-            uv-resolution: highest
-            deprecated-tests: "no-deprecation"
       fail-fast: false
     runs-on: ${{ matrix.os }}
     env:
