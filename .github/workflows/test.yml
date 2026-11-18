@@ -145,48 +145,6 @@ jobs:
           path: coverage
           include-hidden-files: true
 
-  benchmark:
-    needs:
-      - changes
-    if: needs.changes.outputs.src == 'true' || github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    env:
-      UV_PYTHON: "3.13"
-      UV_RESOLUTION: highest
-    steps:
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-      - uses: actions/checkout@v7.0.1
-        with:
-          persist-credentials: false
-      - name: Set up Python
-        uses: actions/setup-python@v7.1.0
-        with:
-          python-version: "3.13"
-      - name: Setup uv
-        uses: astral-sh/setup-uv@v10.3.2
-        with:
-          version: "latest-known"
-          enable-cache: true
-          cache-dependency-glob: |
-            pyproject.toml
-            uv.lock
-      - name: Install Dependencies
-        run: uv sync --no-dev --group tests --extra all
-      - name: CodSpeed benchmarks
-        uses: CodSpeedHQ/action@v5.6.0
-        with:
-          mode: simulation
-          run: uv run --no-sync pytest tests/benchmarks --codspeed
-      - name: CodSpeed memory benchmark
-        uses: CodSpeedHQ/action@v5.6.0
-        with:
-          mode: memory
-          run: uv run --no-sync pytest tests/memory_benchmarks --codspeed
-
   regression-test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -306,7 +264,6 @@ jobs:
     needs:
       - test
       - coverage-combine
-      - benchmark
       - regression-test
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -319,4 +276,4 @@ jobs:
         uses: re-actors/alls-green@v1.3.0
         with:
           jobs: ${{ toJSON(needs) }}
-          allowed-skips: coverage-combine,test,benchmark
+          allowed-skips: coverage-combine,test
