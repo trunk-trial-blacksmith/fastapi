@@ -51,7 +51,7 @@ jobs:
     timeout-minutes: 10
     strategy:
       matrix:
-        os: [ blacksmith-4vcpu-windows-2025 ]
+        os: [ windows-latest ]
         python-version: [ "3.15" ]
         deprecated-tests: [ "no-deprecation" ]
         uv-resolution:
@@ -59,12 +59,12 @@ jobs:
         starlette-src:
           - starlette-pypi
         include:
-          - os: blacksmith-6vcpu-macos-15
+          - os: macos-latest
             python-version: "3.11"
             coverage: coverage
             uv-resolution: lowest-direct
             deprecated-tests: "no-deprecation"
-          - os: blacksmith-4vcpu-windows-2025
+          - os: windows-latest
             python-version: "3.12"
             coverage: coverage
             uv-resolution: lowest-direct
@@ -127,7 +127,7 @@ jobs:
         if: matrix.without-httpx2 == 'true'
         run: uv pip uninstall httpx2
       - name: Reinstall SQLAlchemy without Cython extensions
-        if: matrix.python-version == '3.14t' && matrix.os == 'ubuntu-latest'
+        if: matrix.python-version == '3.14t' && runner.os == 'Linux'
         run: "DISABLE_SQLALCHEMY_CEXT=1 uv pip install --force-reinstall --no-binary :all: sqlalchemy"
       - run: mkdir coverage
       - name: Test
@@ -151,7 +151,7 @@ jobs:
     steps:
       - name: Check out the pull request
         if: github.event_name == 'pull_request'
-        uses: useblacksmith/checkout@v1
+        uses: useblacksmith/checkout@v1.8.3
         with:
           ref: ${{ github.sha }}
           path: pr
@@ -181,7 +181,7 @@ jobs:
           fi
       - name: Check out the base revision
         if: steps.changed-tests.outputs.found == 'true'
-        uses: useblacksmith/checkout@v1
+        uses: useblacksmith/checkout@v1.8.3
         with:
           ref: ${{ github.event.pull_request.base.sha }}
           path: base
@@ -225,7 +225,7 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
-      - uses: useblacksmith/checkout@v1
+      - uses: useblacksmith/checkout@v1.8.3
         with:
           persist-credentials: false
       - uses: actions/setup-python@v7.1.0

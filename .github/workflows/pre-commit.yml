@@ -19,7 +19,7 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
-      - uses: useblacksmith/checkout@v1
+      - uses: useblacksmith/checkout@v1.8.3
         name: Checkout PR for own repo
         if: env.CAN_PUSH == 'true'
         with:
@@ -30,7 +30,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       # pre-commit lite ci needs the default checkout configs to work
-      - uses: useblacksmith/checkout@v1
+      - uses: useblacksmith/checkout@v1.8.3
         name: Checkout PR for fork
         if: env.CAN_PUSH == 'false'
         with:

@@ -43,7 +43,7 @@ jobs:
     outputs:
       langs: ${{ steps.show-langs.outputs.langs }}
     steps:
-      - uses: useblacksmith/checkout@v1
+      - uses: useblacksmith/checkout@v1.8.3
         with:
           persist-credentials: false
       - name: Set up Python
@@ -80,7 +80,7 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
-      - uses: useblacksmith/checkout@v1
+      - uses: useblacksmith/checkout@v1.8.3
         with:
           persist-credentials: false
       - name: Set up Python

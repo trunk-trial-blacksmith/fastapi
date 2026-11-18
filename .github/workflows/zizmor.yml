@@ -18,7 +18,7 @@ jobs:
       security-events: write # Required for upload-sarif (used by zizmor-action) to upload SARIF files.
     steps:
       - name: Checkout repository
-        uses: useblacksmith/checkout@v1
+        uses: useblacksmith/checkout@v1.8.3
         with:
           persist-credentials: false
       - name: Run zizmor
