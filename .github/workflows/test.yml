@@ -17,7 +17,7 @@ env:
 
 jobs:
   changes:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2604
     # Required permissions
     permissions:
       pull-requests: read
@@ -69,18 +69,18 @@ jobs:
             coverage: coverage
             uv-resolution: lowest-direct
             deprecated-tests: "no-deprecation"
-          - os: ubuntu-latest
+          - os: blacksmith-4vcpu-ubuntu-2604
             python-version: "3.13"
             coverage: coverage
             uv-resolution: highest
             deprecated-tests: "no-deprecation"
-          - os: ubuntu-latest
+          - os: blacksmith-4vcpu-ubuntu-2604
             python-version: "3.14"
             coverage: coverage
             uv-resolution: highest
             starlette-src: starlette-git
             deprecated-tests: "test-deprecation"
-          - os: ubuntu-latest
+          - os: blacksmith-4vcpu-ubuntu-2604
             python-version: "3.15"
             coverage: coverage
             uv-resolution: highest
@@ -127,7 +127,7 @@ jobs:
         if: matrix.without-httpx2 == 'true'
         run: uv pip uninstall httpx2
       - name: Reinstall SQLAlchemy without Cython extensions
-        if: matrix.python-version == '3.14t' && matrix.os == 'ubuntu-latest'
+        if: matrix.python-version == '3.14t' && runner.os == 'Linux'
         run: "DISABLE_SQLALCHEMY_CEXT=1 uv pip install --force-reinstall --no-binary :all: sqlalchemy"
       - run: mkdir coverage
       - name: Test
@@ -146,12 +146,12 @@ jobs:
           include-hidden-files: true
 
   regression-test:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2604
     timeout-minutes: 10
     steps:
       - name: Check out the pull request
         if: github.event_name == 'pull_request'
-        uses: actions/checkout@v7.0.1
+        uses: useblacksmith/checkout@v1.8.3
         with:
           ref: ${{ github.sha }}
           path: pr
@@ -181,7 +181,7 @@ jobs:
           fi
       - name: Check out the base revision
         if: steps.changed-tests.outputs.found == 'true'
-        uses: actions/checkout@v7.0.1
+        uses: useblacksmith/checkout@v1.8.3
         with:
           ref: ${{ github.event.pull_request.base.sha }}
           path: base
@@ -218,14 +218,14 @@ jobs:
   coverage-combine:
     needs:
       - test
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2604
     timeout-minutes: 5
     steps:
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
-      - uses: actions/checkout@v7.0.1
+      - uses: useblacksmith/checkout@v1.8.3
         with:
           persist-credentials: false
       - uses: actions/setup-python@v7.1.0
@@ -265,7 +265,7 @@ jobs:
       - test
       - coverage-combine
       - regression-test
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2604
     timeout-minutes: 5
     steps:
       - name: Dump GitHub context

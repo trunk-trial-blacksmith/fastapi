@@ -8,7 +8,7 @@ permissions: {}
 
 jobs:
   changes:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2604
     # Required permissions
     permissions:
       pull-requests: read
@@ -38,12 +38,12 @@ jobs:
     needs:
       - changes
     if: ${{ needs.changes.outputs.docs == 'true' }}
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2604
     timeout-minutes: 5
     outputs:
       langs: ${{ steps.show-langs.outputs.langs }}
     steps:
-      - uses: actions/checkout@v7.0.1
+      - uses: useblacksmith/checkout@v1.8.3
         with:
           persist-credentials: false
       - name: Set up Python
@@ -70,7 +70,7 @@ jobs:
       - changes
       - langs
     if: ${{ needs.changes.outputs.docs == 'true' }}
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2604
     timeout-minutes: 7
     strategy:
       matrix:
@@ -80,7 +80,7 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
-      - uses: actions/checkout@v7.0.1
+      - uses: useblacksmith/checkout@v1.8.3
         with:
           persist-credentials: false
       - name: Set up Python
@@ -120,7 +120,7 @@ jobs:
     needs:
       - langs
       - build-docs
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2604
     steps:
       - name: Decide whether the needed jobs succeeded or failed
         uses: re-actors/alls-green@v1.3.0

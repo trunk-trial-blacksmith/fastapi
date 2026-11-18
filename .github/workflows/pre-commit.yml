@@ -9,7 +9,7 @@ env:
 
 jobs:
   pre-commit:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2604
     permissions:
       contents: read
       id-token: write
@@ -19,7 +19,7 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
-      - uses: actions/checkout@v7.0.1
+      - uses: useblacksmith/checkout@v1.8.3
         name: Checkout PR for own repo
         if: env.CAN_PUSH == 'true'
         with:
@@ -30,7 +30,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       # pre-commit lite ci needs the default checkout configs to work
-      - uses: actions/checkout@v7.0.1
+      - uses: useblacksmith/checkout@v1.8.3
         name: Checkout PR for fork
         if: env.CAN_PUSH == 'false'
         with:
@@ -95,7 +95,7 @@ jobs:
     if: always()
     needs:
       - pre-commit
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2604
     timeout-minutes: 5
     steps:
       - name: Dump GitHub context

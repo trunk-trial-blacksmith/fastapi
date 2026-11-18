@@ -12,13 +12,13 @@ permissions: {}
 jobs:
   zizmor:
     name: Run zizmor
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2604
     timeout-minutes: 5
     permissions:
       security-events: write # Required for upload-sarif (used by zizmor-action) to upload SARIF files.
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7.0.1
+        uses: useblacksmith/checkout@v1.8.3
         with:
           persist-credentials: false
       - name: Run zizmor
