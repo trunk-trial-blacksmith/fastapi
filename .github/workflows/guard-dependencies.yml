@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   check-author:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2604
     timeout-minutes: 5
     steps:
       - name: Check if author is org member or allowed bot

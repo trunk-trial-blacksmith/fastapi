@@ -15,7 +15,7 @@ permissions: {}
 jobs:
   job:
     if: github.repository_owner == 'fastapi'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2604
     permissions:
       contents: read
       id-token: write
@@ -25,7 +25,7 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
-      - uses: actions/checkout@v7.0.1
+      - uses: useblacksmith/checkout@v1
         with:
           persist-credentials: false
       - name: Set up Python
